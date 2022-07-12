@@ -109,7 +109,23 @@ function Dropdown() {
     setIsOpen(newIsOpen) { this.isOpen = newIsOpen },
   }));
 
-  const onToggle = () => { setIsOpen(!isOpen); };
+  const closeList = () => {
+    setIsOpen(false);
+    document.removeEventListener('click', closeList);
+  };
+
+  const onCloseList = (e: React.MouseEvent<HTMLButtonElement>) => () => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeList();
+  };
+
+  const openList = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOpen(true);
+    document.addEventListener('click', closeList);
+  };
 
   return (
     <DropdownRoot
@@ -121,7 +137,7 @@ function Dropdown() {
         height={50}
         borderColor='#20CC20'
         bgColor='white'
-        onClick={onToggle}
+        onClick={isOpen ? onCloseList : openList}
       >
         Open Dropdown
       </DropdownButton>
