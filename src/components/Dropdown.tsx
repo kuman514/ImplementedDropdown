@@ -100,13 +100,17 @@ const DropdownListItem = styled.button<DropdownListItemProps>`
 
 interface DropdownState {
   isOpen: boolean;
+  currentSelect: string;
   setIsOpen: (newIsOpen: boolean) => void;
+  changeCurrentSelect: (newSelect: string) => void;
 }
 
 function Dropdown() {
-  const { isOpen, setIsOpen } = useLocalObservable<DropdownState>(() => ({
+  const { isOpen, currentSelect, setIsOpen, changeCurrentSelect } = useLocalObservable<DropdownState>(() => ({
     isOpen: false,
+    currentSelect: '',
     setIsOpen(newIsOpen) { this.isOpen = newIsOpen },
+    changeCurrentSelect(newSelect: string) { this.currentSelect = newSelect; },
   }));
 
   const closeList = () => {
@@ -114,9 +118,10 @@ function Dropdown() {
     document.removeEventListener('click', closeList);
   };
 
-  const onCloseList = (e: React.MouseEvent<HTMLButtonElement>) => () => {
+  const onCloseList = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    changeCurrentSelect(e.currentTarget.value);
     closeList();
   };
 
@@ -138,8 +143,9 @@ function Dropdown() {
         borderColor='#20CC20'
         bgColor='white'
         onClick={isOpen ? onCloseList : openList}
+        value={currentSelect}
       >
-        Open Dropdown
+        { currentSelect }
       </DropdownButton>
       <DropdownList
         isOpen={isOpen}
@@ -153,8 +159,10 @@ function Dropdown() {
           isSelected={true}
           bgColor='white'
           bgColorOnHover='#20CCCC'
+          value='Item1'
+          onClick={onCloseList}
         >
-          Item 1
+          Item1
         </DropdownListItem>
         <DropdownListItem
           topLineColor='#CCCCCC'
@@ -162,8 +170,10 @@ function Dropdown() {
           isSelected={true}
           bgColor='white'
           bgColorOnHover='#20CCCC'
+          value='Item2'
+          onClick={onCloseList}
         >
-          Item 2
+          Item2
         </DropdownListItem>
         <DropdownListItem
           topLineColor='#CCCCCC'
@@ -171,8 +181,10 @@ function Dropdown() {
           isSelected={true}
           bgColor='white'
           bgColorOnHover='#20CCCC'
+          value='Item3'
+          onClick={onCloseList}
         >
-          Item 3
+          Item3
         </DropdownListItem>
         <DropdownListItem
           topLineColor='#CCCCCC'
@@ -180,8 +192,10 @@ function Dropdown() {
           isSelected={true}
           bgColor='white'
           bgColorOnHover='#20CCCC'
+          value='Item4'
+          onClick={onCloseList}
         >
-          Item 4
+          Item4
         </DropdownListItem>
         <DropdownListItem
           topLineColor='#CCCCCC'
@@ -189,8 +203,10 @@ function Dropdown() {
           isSelected={true}
           bgColor='white'
           bgColorOnHover='#20CCCC'
+          value='Item5'
+          onClick={onCloseList}
         >
-          Item 5
+          Item5
         </DropdownListItem>
       </DropdownList>
     </DropdownRoot>
